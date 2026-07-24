@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DuplicateHunter.Core/DuplicateHunter.Core.csproj" />
+    <Project Path="src/DuplicateHunter.Database/DuplicateHunter.Database.csproj" />
+    <Project Path="src/DuplicateHunter.Helpers/DuplicateHunter.Helpers.csproj" />
+    <Project Path="src/DuplicateHunter.Models/DuplicateHunter.Models.csproj" />
+    <Project Path="src/DuplicateHunter.Services/DuplicateHunter.Services.csproj" />
+    <Project Path="src/DuplicateHunter.UI/DuplicateHunter.UI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DuplicateHunter.Tests/DuplicateHunter.Tests.csproj" />
+  </Folder>
+</Solution>

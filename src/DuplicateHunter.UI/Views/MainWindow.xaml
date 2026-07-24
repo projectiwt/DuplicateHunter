@@ -1,0 +1,250 @@
+<Window x:Class="DuplicateHunter.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Duplicate Hunter"
+        Width="1400"
+        Height="850"
+        MinWidth="1100"
+        MinHeight="700"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Grid>
+
+        <!-- ========================= -->
+        <!-- Layout -->
+        <!-- ========================= -->
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ========================= -->
+        <!-- Sidebar -->
+        <!-- ========================= -->
+
+        <Border Grid.Column="0"
+                Background="{StaticResource SidebarBrush}">
+
+            <DockPanel>
+
+                <StackPanel DockPanel.Dock="Top"
+                            Margin="20,25">
+
+                    <TextBlock Text="Duplicate Hunter"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+
+                    <TextBlock Text="SHA-256 Duplicate Detection"
+                               Margin="0,5,0,0"
+                               FontSize="13"
+                               Foreground="#C8D0D8"/>
+
+                </StackPanel>
+
+                <StackPanel Margin="12,20">
+
+                    <Button Content="🏠 Dashboard"
+                            Height="45"
+                            Margin="0,5"/>
+
+                    <Button Content="📁 Scan Folder"
+                            Height="45"
+                            Margin="0,5"/>
+
+                    <Button Content="📄 Results"
+                            Height="45"
+                            Margin="0,5"/>
+
+                    <Button Content="📜 History"
+                            Height="45"
+                            Margin="0,5"/>
+
+                    <Button Content="⚙ Settings"
+                            Height="45"
+                            Margin="0,5"/>
+
+                    <Button Content="ℹ About"
+                            Height="45"
+                            Margin="0,5"/>
+
+                </StackPanel>
+
+            </DockPanel>
+
+        </Border>
+
+        <!-- ========================= -->
+        <!-- Main Content -->
+        <!-- ========================= -->
+
+        <Grid Grid.Column="1"
+              Margin="30">
+
+            <Grid.RowDefinitions>
+
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+
+            <StackPanel>
+
+                <TextBlock Text="Dashboard"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryTextBrush}"/>
+
+                <TextBlock Text="Monitor duplicate files across your computer"
+                           Margin="0,5,0,0"
+                           FontSize="15"
+                           Foreground="{StaticResource SecondaryTextBrush}"/>
+
+            </StackPanel>
+
+            <!-- Statistics -->
+
+            <UniformGrid Grid.Row="2"
+                         Columns="4">
+
+                <!-- Files -->
+
+                <Border Style="{StaticResource CardStyle}">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Files Scanned"
+                                   FontSize="14"
+                                   Foreground="Gray"/>
+
+                        <TextBlock Text="{Binding FilesScanned}"
+                                   Margin="0,12,0,0"
+                                   FontSize="36"
+                                   FontWeight="Bold"/>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- Duplicates -->
+
+                <Border Style="{StaticResource CardStyle}">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Duplicate Groups"
+                                   FontSize="14"
+                                   Foreground="Gray"/>
+
+                        <TextBlock Text="{Binding DuplicateGroups}"
+                                   Margin="0,12,0,0"
+                                   FontSize="36"
+                                   FontWeight="Bold"/>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- Space -->
+
+                <Border Style="{StaticResource CardStyle}">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Wasted Space"
+                                   FontSize="14"
+                                   Foreground="Gray"/>
+
+                        <TextBlock Text="{Binding WastedSpace}"
+                                   Margin="0,12,0,0"
+                                   FontSize="36"
+                                   FontWeight="Bold"/>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- Scan Time -->
+
+                <Border Style="{StaticResource CardStyle}">
+
+                    <StackPanel>
+
+                        <TextBlock Text="Scan Time"
+                                   FontSize="14"
+                                   Foreground="Gray"/>
+
+                        <TextBlock Text="00:00"
+                                   Margin="0,12,0,0"
+                                   FontSize="36"
+                                   FontWeight="Bold"/>
+
+                    </StackPanel>
+
+                </Border>
+
+            </UniformGrid>
+
+            <!-- Scan Panel -->
+
+            <Border Grid.Row="4"
+                    Style="{StaticResource CardStyle}">
+
+                <Grid>
+
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="700">
+
+                        <TextBlock Text="Ready to Scan"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            Text="Select a folder and detect duplicate files using SHA-256 hashing."
+                            Foreground="Gray"
+                            TextAlignment="Center"/>
+
+                        <Border Margin="0,20,0,0"
+                                Padding="12"
+                                Background="#F5F7FA"
+                                CornerRadius="8"
+                                BorderBrush="#DDDDDD"
+                                BorderThickness="1">
+
+                            <TextBlock
+                                Text="{Binding SelectedFolder}"
+                                TextWrapping="Wrap"
+                                FontWeight="SemiBold"
+                                Foreground="{StaticResource PrimaryBrush}"/>
+
+                        </Border>
+
+                        <Button Content="🔍 Start Scan"
+                                Width="220"
+                                Height="55"
+                                Margin="0,30,0,0"
+                                HorizontalAlignment="Center"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding StartScanCommand}"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</Window>
