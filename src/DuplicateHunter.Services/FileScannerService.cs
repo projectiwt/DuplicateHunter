@@ -15,7 +15,10 @@ public class FileScannerService
         _hashService = hashService;
     }
 
-    public async Task<List<DuplicateFile>> ScanAsync(string folderPath)
+    public async Task<List<DuplicateFile>> ScanAsync(
+    string folderPath,
+    IProgress<ScanProgress>? progress = null)
+
     {
         var results = new List<DuplicateFile>();
 
@@ -32,6 +35,14 @@ public class FileScannerService
                     FilePath = file,
                     Hash = hash,
                     Size = new FileInfo(file).Length
+                });
+
+
+                progress?.Report(new ScanProgress
+                {
+                    FilesScanned = results.Count,
+                    TotalFiles = files.Count,
+                    CurrentFile = Path.GetFileName(file)
                 });
             }
             catch

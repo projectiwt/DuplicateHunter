@@ -36,6 +36,14 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private bool isScanning;
 
+    [ObservableProperty]
+    private double scanProgress;
+
+    [ObservableProperty]
+    private string currentFile = "Ready";
+
+    [ObservableProperty]
+    private string scanStatus = "Idle";
     [RelayCommand]
     private async Task StartScanAsync()
     {
@@ -48,13 +56,24 @@ public partial class DashboardViewModel : ObservableObject
 
         IsScanning = true;
 
-        var files = await _fileScannerService.ScanAsync(folder);
+        var files = await _fileScannerService.ScanAsync(
+    folder,
+    new Progress<DuplicateHunter.Models.ScanProgress>(progress =>
+    {
+        ScanProgress = progress.Percentage;
+        CurrentFile = progress.CurrentFile;
+        ScanStatus = $"Scanning {progress.FilesScanned} of {progress.TotalFiles}";
+    }));
 
         var statistics = _statisticsService.Calculate(files);
 
         FilesScanned = statistics.FilesScanned;
         DuplicateGroups = statistics.DuplicateGroups;
         WastedSpace = statistics.WastedSpace;
+
+        ScanProgress = 100;
+        ScanStatus = "Scan Complete";
+        CurrentFile = "Ready";
 
         IsScanning = false;
     }

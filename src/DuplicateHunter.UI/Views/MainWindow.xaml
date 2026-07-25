@@ -237,6 +237,25 @@
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Command="{Binding StartScanCommand}"/>
 
+                        <ProgressBar Width="500"
+             Height="18"
+             Margin="0,25,0,0"
+             Minimum="0"
+             Maximum="100"
+             Value="{Binding ScanProgress}"/>
+
+                        <TextBlock Text="{Binding ScanStatus}"
+           Margin="0,12,0,0"
+           FontWeight="SemiBold"
+           HorizontalAlignment="Center"/>
+
+                        <TextBlock Text="{Binding CurrentFile}"
+           Margin="0,5,0,0"
+           Foreground="Gray"
+           TextAlignment="Center"
+           TextWrapping="Wrap"
+           HorizontalAlignment="Center"/>
+
                     </StackPanel>
 
                 </Grid>
