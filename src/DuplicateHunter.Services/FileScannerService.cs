@@ -1,4 +1,5 @@
-﻿using DuplicateHunter.Models;
+﻿using System.Threading;
+using DuplicateHunter.Models;
 
 namespace DuplicateHunter.Services;
 
@@ -16,9 +17,9 @@ public class FileScannerService
     }
 
     public async Task<List<DuplicateFile>> ScanAsync(
-    string folderPath,
-    IProgress<ScanProgress>? progress = null)
-
+        string folderPath,
+        IProgress<ScanProgress>? progress = null,
+        CancellationToken cancellationToken = default)
     {
         var results = new List<DuplicateFile>();
 
@@ -26,6 +27,9 @@ public class FileScannerService
 
         foreach (var file in files)
         {
+            // Stop immediately if cancellation was requested
+            cancellationToken.ThrowIfCancellationRequested();
+
             try
             {
                 var hash = await _hashService.ComputeHashAsync(file);
@@ -36,7 +40,6 @@ public class FileScannerService
                     Hash = hash,
                     Size = new FileInfo(file).Length
                 });
-
 
                 progress?.Report(new ScanProgress
                 {

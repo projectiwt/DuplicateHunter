@@ -1,3 +1,4 @@
+using System.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DuplicateHunter.Services;
@@ -10,6 +11,8 @@ public partial class DashboardViewModel : ObservableObject
     private readonly FolderPickerService _folderPickerService;
     private readonly FileScannerService _fileScannerService;
     private readonly ScanStatisticsService _statisticsService;
+
+    private CancellationTokenSource? _cancellationTokenSource;
 
     public DashboardViewModel(
         FolderPickerService folderPickerService,
@@ -44,6 +47,7 @@ public partial class DashboardViewModel : ObservableObject
 
     [ObservableProperty]
     private string scanStatus = "Idle";
+
     [RelayCommand]
     private async Task StartScanAsync()
     {
@@ -56,25 +60,51 @@ public partial class DashboardViewModel : ObservableObject
 
         IsScanning = true;
 
-        var files = await _fileScannerService.ScanAsync(
-    folder,
-    new Progress<DuplicateHunter.Models.ScanProgress>(progress =>
+        ScanProgress = 0;
+        CurrentFile = "Preparing...";
+        ScanStatus = "Starting scan...";
+
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        try
+        {
+            var files = await _fileScannerService.ScanAsync(
+                folder,
+                new Progress<DuplicateHunter.Models.ScanProgress>(progress =>
+                {
+                    ScanProgress = progress.Percentage;
+                    CurrentFile = progress.CurrentFile;
+                    ScanStatus = $"Scanning {progress.FilesScanned} of {progress.TotalFiles}";
+                }),
+                _cancellationTokenSource.Token);
+
+            var statistics = _statisticsService.Calculate(files);
+
+            FilesScanned = statistics.FilesScanned;
+            DuplicateGroups = statistics.DuplicateGroups;
+            WastedSpace = statistics.WastedSpace;
+
+            ScanProgress = 100;
+            ScanStatus = "Scan Complete";
+            CurrentFile = "Ready";
+        }
+        catch (OperationCanceledException)
+        {
+            ScanStatus = "Scan Cancelled";
+            CurrentFile = "Ready";
+        }
+        finally
+        {
+            IsScanning = false;
+
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
+        }
+    }
+
+    [RelayCommand]
+    private void StopScan()
     {
-        ScanProgress = progress.Percentage;
-        CurrentFile = progress.CurrentFile;
-        ScanStatus = $"Scanning {progress.FilesScanned} of {progress.TotalFiles}";
-    }));
-
-        var statistics = _statisticsService.Calculate(files);
-
-        FilesScanned = statistics.FilesScanned;
-        DuplicateGroups = statistics.DuplicateGroups;
-        WastedSpace = statistics.WastedSpace;
-
-        ScanProgress = 100;
-        ScanStatus = "Scan Complete";
-        CurrentFile = "Ready";
-
-        IsScanning = false;
+        _cancellationTokenSource?.Cancel();
     }
 }
