@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net10.0-windows</TargetFramework>
 
 		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
+        <UseWindowsForms>true</UseWindowsForms>
 
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -20,6 +20,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\DuplicateHunter.Services\DuplicateHunter.Services.csproj" />
 	  <ProjectReference Include="..\DuplicateHunter.Models\DuplicateHunter.Models.csproj" />
+	  <ProjectReference Include="..\DuplicateHunter.Database\DuplicateHunter.Database.csproj" />
 	</ItemGroup>
 
 </Project>

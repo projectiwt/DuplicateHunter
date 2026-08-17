@@ -1,9 +1,332 @@
-<Page x:Class="DuplicateHunter.UI.Views.DashboardView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<UserControl x:Class="DuplicateHunter.UI.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="850"
+             d:DesignWidth="1100">
 
-    <Grid Background="White">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-    </Grid>
+        <Grid Margin="10,0,10,20">
 
-</Page>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ========================================= -->
+            <!-- Header -->
+            <!-- ========================================= -->
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="System Dashboard"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryTextBrush}"/>
+
+                <TextBlock Text="Monitor storage waste, inspect duplicate files, and run high-speed SHA-256 analysis."
+                           Margin="0,5,0,0"
+                           FontSize="14"
+                           Foreground="{StaticResource SecondaryTextBrush}"/>
+            </StackPanel>
+
+            <!-- ========================================= -->
+            <!-- Primary Metrics Cards -->
+            <!-- ========================================= -->
+
+            <UniformGrid Grid.Row="2"
+                         Columns="4"
+                         Margin="-8,0">
+
+                <!-- Files Scanned -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="Files Analyzed"
+                                       FontSize="13"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                       DockPanel.Dock="Left"/>
+                            <TextBlock Text="📁" FontSize="18" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding FilesScanned, StringFormat={}{0:N0}}"
+                                   Margin="0,12,0,4"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryTextBrush}"/>
+
+                        <TextBlock Text="Total files in current session"
+                                   FontSize="11"
+                                   Foreground="#94A3B8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Duplicate Groups -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="Duplicate Sets"
+                                       FontSize="13"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                       DockPanel.Dock="Left"/>
+                            <TextBlock Text="⚡" FontSize="18" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding DuplicateGroups, StringFormat={}{0:N0}}"
+                                   Margin="0,12,0,4"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryBrush}"/>
+
+                        <TextBlock Text="Identical hash clusters"
+                                   FontSize="11"
+                                   Foreground="#94A3B8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Wasted Space -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="Wasted Storage"
+                                       FontSize="13"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                       DockPanel.Dock="Left"/>
+                            <TextBlock Text="💾" FontSize="18" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding WastedSpace}"
+                                   Margin="0,12,0,4"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DangerBrush}"/>
+
+                        <TextBlock Text="Recoverable disk space"
+                                   FontSize="11"
+                                   Foreground="#94A3B8"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Scan Status -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Text="Engine Status"
+                                       FontSize="13"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource SecondaryTextBrush}"
+                                       DockPanel.Dock="Left"/>
+                            <TextBlock Text="🛡️" FontSize="18" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding ScanStatus}"
+                                   Margin="0,12,0,4"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource SuccessBrush}"
+                                   TextTrimming="CharacterEllipsis"/>
+
+                        <TextBlock Text="SHA-256 Engine"
+                                   FontSize="11"
+                                   Foreground="#94A3B8"/>
+                    </StackPanel>
+                </Border>
+
+            </UniformGrid>
+
+            <!-- ========================================= -->
+            <!-- Quick Actions -->
+            <!-- ========================================= -->
+
+            <Border Grid.Row="4"
+                    Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Quick Actions"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Margin="0,0,0,15"/>
+
+                    <UniformGrid Columns="4">
+
+                        <Button Margin="4"
+                                Padding="15"
+                                Background="#F8FAFC"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Scan">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="📁" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                <TextBlock Text="New Folder Scan" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Select directory &amp; analyze" FontSize="11" Foreground="Gray" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="4"
+                                Padding="15"
+                                Background="#F8FAFC"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Results">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="📄" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                <TextBlock Text="Manage Duplicates" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center"/>
+                                <TextBlock Text="View &amp; clean results" FontSize="11" Foreground="Gray" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="4"
+                                Padding="15"
+                                Background="#F8FAFC"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="History">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="📜" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                <TextBlock Text="Scan History" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center"/>
+                                <TextBlock Text="View previous logs" FontSize="11" Foreground="Gray" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="4"
+                                Padding="15"
+                                Background="#F8FAFC"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                Command="{Binding NavigateCommand}"
+                                CommandParameter="Settings">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="⚙" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                <TextBlock Text="Settings &amp; Filters" FontWeight="SemiBold" FontSize="14" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Ignored extensions/folders" FontSize="11" Foreground="Gray" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+
+            <!-- ========================================= -->
+            <!-- Recent Activity & Recent Folders -->
+            <!-- ========================================= -->
+
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="340"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Recent Scans Table -->
+                <Border Grid.Column="0"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,12">
+                            <TextBlock Text="Recent Scan Activity"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       DockPanel.Dock="Left"/>
+                            <Button Content="View Full History →"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    DockPanel.Dock="Right"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding NavigateCommand}"
+                                    CommandParameter="History"/>
+                        </DockPanel>
+
+                        <DataGrid ItemsSource="{Binding ScanHistory}"
+                                  SelectedItem="{Binding SelectedScanHistory}"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  MaxHeight="260"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  AlternatingRowBackground="#F8FAFC"
+                                  RowBackground="White"
+                                  ColumnHeaderHeight="36"
+                                  RowHeight="34">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Date / Time"
+                                                    Binding="{Binding CompletedUtc, StringFormat={}{0:yyyy-MM-dd HH:mm}}"
+                                                    Width="140"/>
+                                <DataGridTextColumn Header="Scanned Folder"
+                                                    Binding="{Binding FolderPath}"
+                                                    Width="*"/>
+                                <DataGridTextColumn Header="Status"
+                                                    Binding="{Binding Status}"
+                                                    Width="95"/>
+                                <DataGridTextColumn Header="Duplicates"
+                                                    Binding="{Binding DuplicateGroups}"
+                                                    Width="85"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Recent Folders Quick Picker -->
+                <Border Grid.Column="2"
+                        Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Recent Folders"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,12"/>
+
+                        <ItemsControl ItemsSource="{Binding RecentFolders}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,6"
+                                            Padding="10,8"
+                                            Background="#F8FAFC"
+                                            BorderBrush="{StaticResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="6">
+                                        <DockPanel>
+                                            <Button Content="📁 Scan"
+                                                    DockPanel.Dock="Right"
+                                                    Padding="8,4"
+                                                    Margin="6,0,0,0"
+                                                    Style="{StaticResource SecondaryButtonStyle}"
+                                                    Command="{Binding DataContext.SelectRecentFolderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding FolderPath}"
+                                                           FontWeight="SemiBold"
+                                                           FontSize="12"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding LastUsedUtc, StringFormat={}Last used: {0:yyyy-MM-dd}}"
+                                                           FontSize="10"
+                                                           Foreground="Gray"/>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>
