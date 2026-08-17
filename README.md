@@ -12,7 +12,7 @@ Duplicate Hunter v1.0 is a release-ready Windows desktop application for detecti
 - 📊 Modern dashboard with scan statistics
 - 🖥️ Built using the MVVM architecture
 - ⚡ Fast and responsive Windows desktop application
-- 🚧 Background scanning with live progress *(Coming Soon)*
+- 🔄 Background scanning with live progress
 
 ## 🛠️ Technology Stack
 
